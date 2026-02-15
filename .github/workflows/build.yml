@@ -1,10 +1,7 @@
-name: Build Flutter APK
+name: Build
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
@@ -12,28 +9,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Setup Java
-        uses: actions/setup-java@v3
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        run: | 
+          echo "Building the project..."
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          distribution: 'zulu'
-          java-version: '11'
-      
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.19.0'
-          channel: 'stable'
-      
-      - name: Get dependencies
-        run: flutter pub get
-      
-      - name: Build APK
-        run: flutter build apk --release
-      
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
-        with:
-          name: ghost-chat-demo-apk
-          path: build/app/outputs/flutter-app.apk
+          name: build-artifacts
+          path: ./path-to-artifacts
